@@ -10,7 +10,7 @@ function App() {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const handleAddProduct = (product) => {
-    setProducts((prev) => [...prev, product]);
+    setProducts((prev) => [...prev, product]); //commit
   };
 
   const handleProductClick = (product) => {
