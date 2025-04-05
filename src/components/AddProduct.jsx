@@ -1,5 +1,7 @@
+// src/components/AddProduct.jsx
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import "../styles/AddProduct.css"; // Custom CSS overrides
 
 function AddProduct({ onClose, onSubmit }) {
   const [images, setImages] = useState([]);
@@ -56,13 +58,13 @@ function AddProduct({ onClose, onSubmit }) {
     setTimeout(() => {
       setShowSuccess(false);
       resetForm();
-    }, 1500);
+    }, 4000);
   };
 
   return (
-    <Modal show onHide={resetForm} size="lg" centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Add a Product</Modal.Title>
+    <Modal show onHide={resetForm} size="lg" centered className="fade-in-modal">
+      <Modal.Header closeButton className="modal-header-custom">
+        <Modal.Title className="modal-title-custom">Add a Product</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {showSuccess ? (
@@ -70,7 +72,7 @@ function AddProduct({ onClose, onSubmit }) {
             Product added successfully!
           </div>
         ) : (
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit} className="add-product-form">
             <Form.Group className="mb-3">
               <Form.Label>Product Name</Form.Label>
               <Form.Control
@@ -107,41 +109,38 @@ function AddProduct({ onClose, onSubmit }) {
 
             <Form.Group className="mb-3">
               <Form.Label>Preview / Rearrange / Remove Images</Form.Label>
-              <div className="d-flex flex-wrap gap-2">
+              <div className="d-flex flex-wrap gap-3 image-preview-wrapper">
                 {images.map((img, index) => (
-                  <div key={index} className="position-relative">
+                  <div key={index} className="preview-box">
                     <img
                       src={img.url}
                       alt={`preview-${index}`}
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                        objectFit: "cover",
-                        borderRadius: "6px",
-                        border: "1px solid #ccc",
-                      }}
+                      className="preview-img"
                     />
                     <button
-                      className="btn btn-sm btn-danger position-absolute top-0 end-0"
+                      className="btn btn-sm btn-danger remove-btn"
                       type="button"
                       onClick={() => removeImage(index)}
+                      aria-label="Remove image"
                     >
                       ×
                     </button>
                     {index > 0 && (
                       <button
-                        className="btn btn-sm btn-secondary position-absolute bottom-0 start-0"
+                        className="btn btn-sm btn-secondary move-btn move-up"
                         type="button"
                         onClick={() => rearrangeImages(index, index - 1)}
+                        aria-label="Move image up"
                       >
                         ↑
                       </button>
                     )}
                     {index < images.length - 1 && (
                       <button
-                        className="btn btn-sm btn-secondary position-absolute bottom-0 end-0"
+                        className="btn btn-sm btn-secondary move-btn move-down"
                         type="button"
                         onClick={() => rearrangeImages(index, index + 1)}
+                        aria-label="Move image down"
                       >
                         ↓
                       </button>
@@ -151,7 +150,7 @@ function AddProduct({ onClose, onSubmit }) {
               </div>
             </Form.Group>
 
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-4">
               <Form.Label>Add More Images</Form.Label>
               <Form.Control
                 type="file"
@@ -162,7 +161,7 @@ function AddProduct({ onClose, onSubmit }) {
             </Form.Group>
 
             <div className="d-flex justify-content-between">
-              <Button variant="secondary" onClick={resetForm}>
+              <Button variant="outline-secondary" onClick={resetForm}>
                 Cancel
               </Button>
               <Button

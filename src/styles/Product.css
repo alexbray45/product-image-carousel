@@ -1,0 +1,114 @@
+/* src/styles/Product.css */
+
+.product-card {
+  max-width: 350px;
+  margin: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  border: none;
+  scroll-snap-align: start;
+}
+
+.product-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  border: 1px solid #007bff55;
+}
+
+.image-wrapper {
+  height: 300px;
+
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+.product-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #343a40;
+  margin-bottom: 4px;
+}
+
+.product-price {
+  font-size: 1rem;
+  color: #007bff;
+}
+
+.products-container-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+}
+
+.products-container {
+  overflow-x: auto;
+  max-width: 1000px;
+  scroll-behavior: smooth;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+
+  scroll-snap-type: x mandatory;
+
+  -ms-overflow-style: none;
+  /* scrollbar-width: none; */
+}
+
+.products-container {
+  -ms-overflow-style: none; /* IE and Edge */
+  /* scrollbar-width: none; Firefox */
+  /* overflow-x: auto; */
+  /* scroll-behavior: smooth; */
+}
+
+.products-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.carousel-arrow {
+  font-size: 2rem;
+  color: #007bff;
+  background: white;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.carousel-arrow:hover {
+  color: #0056b3;
+  transform: scale(1.2);
+}
+
+.dots-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background-color: #ccc;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+
+.active-dot {
+  background-color: #007bff;
+}

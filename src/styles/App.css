@@ -1,7 +1,7 @@
 #root {
-  max-width: 1280px;
+  /* max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem; */
   text-align: center;
 }
 
@@ -35,8 +35,34 @@
 
 .card {
   padding: 2em;
+  min-width: 220px;
 }
 
 .read-the-docs {
   color: #888;
+}
+
+.dots-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.dot {
+  height: 12px;
+  width: 12px;
+  background-color: #ccc;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.dot:hover {
+  background-color: #888;
+}
+
+.active-dot {
+  background-color: #007bff;
 }
