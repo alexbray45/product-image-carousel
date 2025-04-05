@@ -101,9 +101,14 @@ function AddProduct({ onClose, onSubmit }) {
               <Form.Control
                 type="number"
                 value={price}
-                onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => {
+                  // Ensure the value never goes below 0
+                  const newValue = Math.max(0, e.target.value);
+                  setPrice(newValue);
+                }}
                 placeholder="e.g. 99.99"
                 required
+                min="0"
               />
             </Form.Group>
 
