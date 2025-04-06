@@ -1,38 +1,21 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import AddProduct from "./components/AddProduct";
 import Product from "./components/Product";
 import ProductDetailsModal from "./components/ProductDetailsModal";
 import { Button, Container } from "react-bootstrap";
-import "./styles/App.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import "./styles/App.css";
 
 function App() {
   const [products, setProducts] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
   const scrollRef = useRef(null);
   const autoplayRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const cardWidth = 250; // match your actual card width
 
-  // 👈 Arrow scroll handlers
-  const handleNext = () => {
-    const nextIndex = (activeIndex + 1) % products.length;
-    scrollRef.current.scrollTo({
-      left: nextIndex * cardWidth,
-      behavior: "smooth",
-    });
-    setActiveIndex(nextIndex);
-  };
-
-  const handlePrev = () => {
-    const prevIndex = (activeIndex - 1 + products.length) % products.length;
-    scrollRef.current.scrollTo({
-      left: prevIndex * (cardWidth / 2),
-      behavior: "smooth",
-    });
-    setActiveIndex(prevIndex);
-  };
+  const cardWidth = 370; // Adjust based on your card size + margin
 
   const handleAddProduct = (product) => {
     setProducts((prev) => [...prev, product]);
@@ -46,55 +29,52 @@ function App() {
     setSelectedProduct(null);
   };
 
-  // 🔁 Autoplay scroll every 5s
-  useEffect(() => {
-    if (!scrollRef.current || products.length === 0) return;
-
-    const startAutoplay = () => {
-      autoplayRef.current = setInterval(() => {
-        const nextIndex = (activeIndex + 1) % products.length;
+  const scrollToIndex = useCallback(
+    (index) => {
+      if (scrollRef.current) {
         scrollRef.current.scrollTo({
-          left: nextIndex * cardWidth,
+          left: index * cardWidth,
           behavior: "smooth",
         });
-        setActiveIndex(nextIndex);
-      }, 5000);
-    };
+      }
+      setActiveIndex(index);
+    },
+    [cardWidth]
+  );
 
-    startAutoplay();
+  const handleNext = useCallback(() => {
+    const nextIndex = (activeIndex + 1) % products.length;
+    scrollToIndex(nextIndex);
+  }, [activeIndex, products.length, scrollToIndex]);
+
+  const handlePrev = () => {
+    const prevIndex = (activeIndex - 1 + products.length) % products.length;
+    scrollToIndex(prevIndex);
+  };
+
+  // Auto-scroll every 5 seconds
+  useEffect(() => {
+    if (products.length === 0) return;
+
+    autoplayRef.current = setInterval(() => {
+      handleNext();
+    }, 5000);
 
     return () => clearInterval(autoplayRef.current);
-  }, [activeIndex, products.length]);
-
-  // ⏸️ Pause on hover, resume on leave
-  const handleMouseEnter = () => {
-    clearInterval(autoplayRef.current);
-  };
-
-  const handleMouseLeave = () => {
-    autoplayRef.current = setInterval(() => {
-      const nextIndex = (activeIndex + 1) % products.length;
-      scrollRef.current.scrollTo({
-        left: nextIndex * cardWidth,
-        behavior: "smooth",
-      });
-      setActiveIndex(nextIndex);
-    }, 5000);
-  };
+  }, [handleNext, products.length]);
 
   return (
     <Container className="py-5 text-center">
-      <h1 className="mb-4">Meliotech - Product Image Carousel</h1>
+      <h1 className="mb-3">Meliotech - Product Image Carousel</h1>
       <p className="mb-4 text-muted">
-        This carousel UI component allows users to seamlessly browse products
-        with autoplay functionality, responsive layout, and intuitive
-        navigation. Designed with attention to detail, it delivers a smooth user
-        experience through elegant animations and interactive features. <br />
+        Explore a beautiful and dynamic carousel of products, complete with
+        animations, responsive layout, and seamless transitions. <br />
         <strong>
-          Designed & developed by Alexander Allotey-Bray for the Meliotech IT
-          Solutions Engineer Tech Challenge.
+          Designed and developed by Alexander Allotey-Bray as a front-end UI
+          showcase for the Meliotech IT Solutions Engineer Tech Challenge.
         </strong>
       </p>
+
       <Button variant="success" onClick={() => setShowAddModal(true)}>
         + Add a Product
       </Button>
@@ -107,56 +87,59 @@ function App() {
       )}
 
       {products.length > 0 && (
-        <div className="products-container-wrapper mt-5">
-          <button
-            className="carousel-arrow"
-            onClick={handlePrev}
-            aria-label="Scroll Left"
-          >
-            <FaArrowLeft />
-          </button>
+        <>
+          <div className="products-container-wrapper mt-5">
+            {products.length >= 3 && (
+              <button
+                className="carousel-arrow"
+                onClick={handlePrev}
+                aria-label="Previous"
+              >
+                <FaArrowLeft />
+              </button>
+            )}
 
-          <div
-            className="d-flex gap-3 overflow-auto mt-5 products-container"
-            ref={scrollRef}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            {products.map((product, index) => (
-              <Product
-                key={index}
-                product={product}
-                onClick={() => handleProductClick(product)}
-              />
-            ))}
+            <div
+              className="products-container d-flex gap-3"
+              ref={scrollRef}
+              onMouseEnter={() => clearInterval(autoplayRef.current)}
+              onMouseLeave={() => {
+                autoplayRef.current = setInterval(() => {
+                  handleNext();
+                }, 5000);
+              }}
+            >
+              {products.map((product, index) => (
+                <Product
+                  key={index}
+                  product={product}
+                  onClick={() => handleProductClick(product)}
+                />
+              ))}
+            </div>
+
+            {products.length >= 3 && (
+              <button
+                className="carousel-arrow"
+                onClick={handleNext}
+                aria-label="Next"
+              >
+                <FaArrowRight />
+              </button>
+            )}
           </div>
 
-          <button
-            className="carousel-arrow"
-            onClick={handleNext}
-            aria-label="Scroll Right"
-          >
-            <FaArrowRight />
-          </button>
-        </div>
+          <div className="dots-wrapper mt-3">
+            {products.map((_, index) => (
+              <span
+                key={index}
+                className={`dot ${activeIndex === index ? "active-dot" : ""}`}
+                onClick={() => scrollToIndex(index)}
+              ></span>
+            ))}
+          </div>
+        </>
       )}
-
-      {/* Dots Navigation */}
-      <div className="dots-wrapper mt-3">
-        {products.map((_, index) => (
-          <span
-            key={index}
-            className={`dot ${activeIndex === index ? "active-dot" : ""}`}
-            onClick={() => {
-              scrollRef.current.scrollTo({
-                left: index * cardWidth,
-                behavior: "smooth",
-              });
-              setActiveIndex(index);
-            }}
-          ></span>
-        ))}
-      </div>
 
       {selectedProduct && (
         <ProductDetailsModal

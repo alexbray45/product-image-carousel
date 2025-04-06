@@ -102,13 +102,16 @@ function AddProduct({ onClose, onSubmit }) {
                 type="number"
                 value={price}
                 onChange={(e) => {
-                  // Ensure the value never goes below 0
-                  const newValue = Math.max(0, e.target.value);
-                  setPrice(newValue);
+                  // Allow only valid numbers, including decimals, and prevent negative values
+                  const newValue = parseFloat(e.target.value);
+                  if (!isNaN(newValue) && newValue >= 0) {
+                    setPrice(newValue);
+                  }
                 }}
                 placeholder="e.g. 99.99"
                 required
                 min="0"
+                step="0.01" // Allow decimal points up to two places
               />
             </Form.Group>
 
