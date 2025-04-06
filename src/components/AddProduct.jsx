@@ -102,21 +102,31 @@ function AddProduct({ onClose, onSubmit }) {
                 type="number"
                 value={price}
                 onChange={(e) => {
-                  // Allow only valid numbers, including decimals, and prevent negative values
-                  const newValue = parseFloat(e.target.value);
-                  if (!isNaN(newValue) && newValue >= 0) {
-                    setPrice(newValue);
+                  const newValue = e.target.value;
+                  // Allow empty string (clear the field) or valid positive numbers with decimals
+                  if (newValue === "" || /^[+]?\d*\.?\d+$/.test(newValue)) {
+                    setPrice(newValue); // Set the value directly
                   }
                 }}
-                placeholder="e.g. 99.99"
+                placeholder="$ 99.99"
                 required
                 min="0"
                 step="0.01" // Allow decimal points up to two places
               />
             </Form.Group>
 
+            <Form.Group className="mb-4">
+              <Form.Label>Add Images</Form.Label>
+              <Form.Control
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleImageUpload}
+              />
+            </Form.Group>
+
             <Form.Group className="mb-3">
-              <Form.Label>Preview / Rearrange / Remove Images</Form.Label>
+              <Form.Label> (Preview / Rearrange / Remove Images)</Form.Label>
               <div className="d-flex flex-wrap gap-3 image-preview-wrapper">
                 {images.map((img, index) => (
                   <div key={index} className="preview-box">
@@ -156,16 +166,6 @@ function AddProduct({ onClose, onSubmit }) {
                   </div>
                 ))}
               </div>
-            </Form.Group>
-
-            <Form.Group className="mb-4">
-              <Form.Label>Add More Images</Form.Label>
-              <Form.Control
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={handleImageUpload}
-              />
             </Form.Group>
 
             <div className="d-flex justify-content-between">

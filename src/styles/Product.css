@@ -5,6 +5,7 @@
   position: relative;
   width: 100%;
   overflow: hidden;
+  gap: 20px;
 }
 
 .products-container {
@@ -12,6 +13,7 @@
   overflow-x: auto;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
+  padding: 20px 0px;
   /* -webkit-overflow-scrolling: touch; */
   /* scrollbar-width: none; Hide scrollbar for Firefox */
 }
@@ -68,7 +70,7 @@
 .carousel-arrow {
   font-size: 2rem;
   color: #007bff;
-  background: white;
+  background: none;
   border: none;
   cursor: pointer;
   z-index: 10;
