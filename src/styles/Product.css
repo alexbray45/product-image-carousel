@@ -24,7 +24,7 @@
 
 .product-card {
   flex: 0 0 350px; /* Card width */
-  margin: 0 10px; /* Adjust margin as needed */
+  margin: 0 10px;
   scroll-snap-align: start;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);

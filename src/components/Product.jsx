@@ -1,10 +1,14 @@
-// src/components/Product.jsx
 import React from "react";
-import Card from "react-bootstrap/Card";
-import "../styles/Product.css"; // Custom styles for product cards
+import Card from "react-bootstrap/Card"; // Import Bootstrap's Card component
+import "../styles/Product.css"; // Custom styles for the product cards
 
+// Product card component to display a single product summary
+// Props:
+// - product: object containing name, price, images
+// - onClick: function to trigger when card is clicked (e.g., show details modal)
 function Product({ product, onClick }) {
   return (
+    // Bootstrap card with custom class and inline width
     <Card
       className="product-card"
       onClick={onClick}

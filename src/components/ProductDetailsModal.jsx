@@ -1,11 +1,16 @@
 import React from "react";
 import { Modal, Carousel } from "react-bootstrap";
-import "../styles/ProductDetailsModal.css"; // custom styles
+import "../styles/ProductDetailsModal.css"; // Import custom styles for this modal
 
+// Component to display detailed information about a product inside a modal
 function ProductDetailsModal({ product, onClose }) {
+  // Determine whether to show carousel controls (only if more than one image)
+
   const multipleImages = product.images.length > 1;
 
   return (
+    // Bootstrap modal: show modal with close functionality
+
     <Modal show onHide={onClose} size="lg" centered>
       <Modal.Header closeButton>
         <Modal.Title>{product.name}</Modal.Title>

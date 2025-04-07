@@ -1,14 +1,23 @@
-// src/components/AddProduct.jsx
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import "../styles/AddProduct.css"; // Custom CSS overrides
+import "../styles/AddProduct.css"; // Custom CSS for modal styling
 
+/**
+ * AddProduct Component
+ * Modal form that allows users to add a new product with name, description, price, and images.
+ * Includes image preview, rearranging, and removal before submitting.
+ */
 function AddProduct({ onClose, onSubmit }) {
+  // State variables for form fields
   const [images, setImages] = useState([]);
   const [productName, setProductName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false); // Success message visibility
+
+  /**
+   * Handle image uploads and generate preview URLs
+   */
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files).map((file) => ({
@@ -18,10 +27,16 @@ function AddProduct({ onClose, onSubmit }) {
     setImages((prev) => [...prev, ...files]);
   };
 
+  /**
+   * Remove a selected image by index
+   */
   const removeImage = (index) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
+  /**
+   * Rearrange images in the array to reorder previews
+   */
   const rearrangeImages = (from, to) => {
     const updated = [...images];
     const [moved] = updated.splice(from, 1);
@@ -29,22 +44,31 @@ function AddProduct({ onClose, onSubmit }) {
     setImages(updated);
   };
 
+  /**
+   * Reset form fields and close the modal
+   */
   const resetForm = () => {
     setProductName("");
     setDescription("");
     setPrice("");
     setImages([]);
-    onClose();
+    onClose(); // Trigger parent close modal
   };
 
+  /**
+   * Handle form submission
+   * Validate fields, construct product object, submit, and show success
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Basic validation check
     if (!productName || !description || !price || images.length === 0) {
       alert("Please fill all fields and add at least one image.");
       return;
     }
 
+    // Construct product object with relevant data
     const product = {
       name: productName,
       description,
@@ -52,9 +76,10 @@ function AddProduct({ onClose, onSubmit }) {
       images: images.map((img) => img.url),
     };
 
-    onSubmit(product);
-    setShowSuccess(true);
+    onSubmit(product); // Pass to parent handler
+    setShowSuccess(true); // To show success message
 
+    // Hide success and reset form after a delay
     setTimeout(() => {
       setShowSuccess(false);
       resetForm();
@@ -63,6 +88,7 @@ function AddProduct({ onClose, onSubmit }) {
 
   return (
     <Modal show onHide={resetForm} size="lg" centered className="fade-in-modal">
+      {/* Modal Header */}
       <Modal.Header closeButton className="modal-header-custom">
         <Modal.Title className="modal-title-custom">Add a Product</Modal.Title>
       </Modal.Header>
@@ -103,6 +129,7 @@ function AddProduct({ onClose, onSubmit }) {
                 value={price}
                 onChange={(e) => {
                   const newValue = e.target.value;
+
                   // Allow empty string (clear the field) or valid positive numbers with decimals
                   if (newValue === "" || /^[+]?\d*\.?\d+$/.test(newValue)) {
                     setPrice(newValue); // Set the value directly
