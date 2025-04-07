@@ -60,14 +60,7 @@ This section outlines the rationale behind the component structure and key logic
 - Custom CSS, Bootstrap Utility Classes - Styling
 - React Hooks (useState) - State Handling
 - Bootstrap Carousel (native implementation)
-- Custom fade-in-classes, transistions via CSS
-Custom fade-in-classes, transistions via CSS
-# 📝 Developer Notes to Take
-- Bootstrap Carousel used instead of third-party libraries like react-slick, in line with the requirement to avoid many dependencies.
-- Simple image input format (comma-separated URLs) ensures ease of use without overengineering.
-- Carousel image transitions are native and smooth via Bootstrap.
-- All modals are styled with subtle fade-in effects for better visual feedback.
-- CSS is organized in modular files (App.css, ProductDetailsModal.css) to keep concerns separated
+
 
 # 🔧 Known Issues and Approach to Solving Them
 ✅ Resolved Issues
