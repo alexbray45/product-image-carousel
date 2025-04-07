@@ -27,6 +27,33 @@ It showcases a React and Bootstrap-based web application to add, view and explor
 5. Responsive Layout: Responsive design using Bootstrap Grid and utility classes. Optimized for both desktop and mobile.
 6. Custom Styling - Custom CSS animations and effects for modals, buttons, cards, and image transistions, to ensure a polished and smooth UX.
 
+# 🧩 Design Decisions & Logic
+This section outlines the rationale behind the component structure and key logic implemented in the project.
+
+🔧 Component Structure:
+
+- AddProduct.jsx: Handles product creation, including form validation and dynamic image upload. Features image preview, reordering, and deletion functionality before submission.
+
+- Product.jsx: Represents each product in the carousel layout with hover effects and basic interactivity. Clicking a product opens the detail modal.
+
+- ProductDetailsModal.jsx: Displays product info in a react-bootstrap modal with a smooth-fade image carousel. It handles dynamic rendering based on image count (e.g., hides carousel arrows for single images).
+
+- App.jsx: Serves as the root component, managing state and rendering the entire interface, including the welcome screen and product carousel.
+
+🎯 Key Logic
+
+- Form Validation: The submit button remains disabled until all required fields (name, description, price, images) are filled. Native HTML5 validation provides feedback when hovering over incomplete fields.
+
+- Image Management: Users can upload multiple images, which are previewed and can be reordered or removed before final submission.
+
+- Carousel Display: Each product’s images are shown in a react-bootstrap carousel. Transitions are animated for a smooth UX.
+
+- Accessibility: Modal and carousel components use aria roles (inherited via Bootstrap) to improve accessibility. Keyboard navigation and screen reader support are built-in.
+
+- Responsive Design: The layout adapts to different screen sizes using flexbox, scroll snapping, and percentage-based widths. Cards remain legible and interactive across devices.
+
+🧱 CSS Modularity
+CSS is scoped into relevant files (Product.css, AddProduct.css, ProductDetailsModal.css, App.css) to keep styling concerns isolated and maintainable. This separation of concerns improves readability and scalability.
 
 # 👨🏽‍💻 Tech Stack
 
